@@ -35,9 +35,10 @@ service_create_container() {
   local SERVICE="$1"
   local SERVICE_ROOT="$PLUGIN_DATA_ROOT/$SERVICE"
   local SERVICE_NAME="$(get_service_name "$SERVICE")"
+  local DATABASE="$(get_database_name "$SERVICE")"
 
   docker run --rm --user root -v "$SERVICE_ROOT/data:/data" "$PLUGIN_IMAGE:$PLUGIN_IMAGE_VERSION" chown solr:solr /data
-  ID=$(docker run --name "$SERVICE_NAME" -v "$SERVICE_ROOT/data:/opt/solr/server/solr/mycores" --env-file="$SERVICE_ROOT/ENV" -d --restart always --label dokku=service --label dokku.service=solr "$PLUGIN_IMAGE:$PLUGIN_IMAGE_VERSION" solr-precreate "$SERVICE" "/opt/solr/server/solr/configsets/$SOLR_CONFIG_SOURCE")
+  ID=$(docker run --name "$SERVICE_NAME" -v "$SERVICE_ROOT/data:/opt/solr/server/solr/mycores" --env-file="$SERVICE_ROOT/ENV" -d --restart always --label dokku=service --label dokku.service=solr "$PLUGIN_IMAGE:$PLUGIN_IMAGE_VERSION" solr-precreate "$DATABASE" "/opt/solr/server/solr/configsets/$SOLR_CONFIG_SOURCE")
   echo "$ID" > "$SERVICE_ROOT/ID"
 
   dokku_log_verbose_quiet "Waiting for container to be ready"
@@ -90,7 +91,8 @@ service_start() {
 service_url() {
   local SERVICE="$1"
   local SERVICE_ALIAS="$(service_alias "$SERVICE")"
-  echo "$PLUGIN_SCHEME://$SERVICE_ALIAS:${PLUGIN_DATASTORE_PORTS[0]}"
+  local DATABASE="$(get_database_name "$SERVICE")"
+  echo "$PLUGIN_SCHEME://$SERVICE_ALIAS:${PLUGIN_DATASTORE_PORTS[0]}/solr/$DATABASE"
 }
 
 update_plugin_scheme_for_app() {
