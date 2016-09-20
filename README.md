@@ -91,15 +91,15 @@ dokku solr:link lolipop playground
 # on the app itself, so they won’t be listed when calling dokku config)
 #
 #   DOKKU_SOLR_LOLIPOP_NAME=/random_name/SOLR
-#   DOKKU_SOLR_LOLIPOP_PORT=tcp://172.17.0.1:9200
-#   DOKKU_SOLR_LOLIPOP_PORT_9200_TCP=tcp://172.17.0.1:9200
-#   DOKKU_SOLR_LOLIPOP_PORT_9200_TCP_PROTO=tcp
-#   DOKKU_SOLR_LOLIPOP_PORT_9200_TCP_PORT=9200
-#   DOKKU_SOLR_LOLIPOP_PORT_9200_TCP_ADDR=172.17.0.1
+#   DOKKU_SOLR_LOLIPOP_PORT=tcp://172.17.0.1:8983
+#   DOKKU_SOLR_LOLIPOP_PORT_8983_TCP=tcp://172.17.0.1:8983
+#   DOKKU_SOLR_LOLIPOP_PORT_8983_TCP_PROTO=tcp
+#   DOKKU_SOLR_LOLIPOP_PORT_8983_TCP_PORT=8983
+#   DOKKU_SOLR_LOLIPOP_PORT_8983_TCP_ADDR=172.17.0.1
 #
 # and the following will be set on the linked application by default
 #
-#   SOLR_URL=http://dokku-solr-lolipop:9200
+#   SOLR_URL=http://dokku-solr-lolipop:8983
 #
 # NOTE: the host exposed here only works internally in docker containers. If
 # you want your container to be reachable from outside, you should use `expose`.
@@ -110,7 +110,7 @@ dokku solr:link other_service playground
 # since SOLR_URL is already in use, another environment variable will be
 # generated automatically
 #
-#   DOKKU_SOLR_BLUE_URL=http://dokku-solr-other-service:9200
+#   DOKKU_SOLR_BLUE_URL=http://dokku-solr-other-service:8983
 
 # you can then promote the new service to be the primary one
 # NOTE: this will restart your app
@@ -120,9 +120,9 @@ dokku solr:promote other_service playground
 # another environment variable to hold the previous value if necessary.
 # you could end up with the following for example:
 #
-#   SOLR_URL=http://dokku-solr-other-service:9200
-#   DOKKU_SOLR_BLUE_URL=http://dokku-solr-other-service:9200
-#   DOKKU_SOLR_SILVER_URL=http://dokku-solr-lolipop:9200
+#   SOLR_URL=http://dokku-solr-other-service:8983
+#   DOKKU_SOLR_BLUE_URL=http://dokku-solr-other-service:8983
+#   DOKKU_SOLR_SILVER_URL=http://dokku-solr-lolipop:8983
 
 # you can also unlink an solr service
 # NOTE: this will restart your app and unset related environment variables
@@ -147,7 +147,7 @@ dokku solr:link lolipop playground
 ```
 
 Will cause SOLR_URL to be set as
-solr2://dokku-solr-lolipop:9200
+solr2://dokku-solr-lolipop:8983
 
 CAUTION: Changing SOLR_DATABASE_SCHEME after linking will cause dokku to
 believe the solr is not linked when attempting to use `dokku solr:unlink`
