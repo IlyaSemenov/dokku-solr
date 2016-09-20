@@ -139,7 +139,6 @@ service_info() {
   local flag key valid_flags
 
   local flag_map=(
-    "--config-dir: ${SERVICE_ROOT}/config"
     "--data-dir: ${SERVICE_ROOT}/data"
     "--dsn: ${SERVICE_URL}"
     "--exposed-ports: $(service_exposed_ports "$SERVICE")"

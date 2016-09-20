@@ -35,25 +35,25 @@ teardown() {
 
 @test "($PLUGIN_COMMAND_PREFIX:promote) error when the service is already promoted" {
   run dokku "$PLUGIN_COMMAND_PREFIX:promote" l my_app
-  assert_contains "${lines[*]}" "already promoted as ELASTICSEARCH_URL"
+  assert_contains "${lines[*]}" "already promoted as SOLR_URL"
 }
 
-@test "($PLUGIN_COMMAND_PREFIX:promote) changes ELASTICSEARCH_URL" {
-  dokku config:set my_app "ELASTICSEARCH_URL=http://host:9200" "DOKKU_ELASTICSEARCH_BLUE_URL=http://dokku-elasticsearch-l:9200"
+@test "($PLUGIN_COMMAND_PREFIX:promote) changes SOLR_URL" {
+  dokku config:set my_app "SOLR_URL=http://host:9200" "DOKKU_SOLR_BLUE_URL=http://dokku-solr-l:9200"
   dokku "$PLUGIN_COMMAND_PREFIX:promote" l my_app
-  url=$(dokku config:get my_app ELASTICSEARCH_URL)
-  assert_equal "$url" "http://dokku-elasticsearch-l:9200"
+  url=$(dokku config:get my_app SOLR_URL)
+  assert_equal "$url" "http://dokku-solr-l:9200"
 }
 
 @test "($PLUGIN_COMMAND_PREFIX:promote) creates new config url when needed" {
-  dokku config:set my_app "ELASTICSEARCH_URL=http://host:9200" "DOKKU_ELASTICSEARCH_BLUE_URL=http://dokku-elasticsearch-l:9200"
+  dokku config:set my_app "SOLR_URL=http://host:9200" "DOKKU_SOLR_BLUE_URL=http://dokku-solr-l:9200"
   dokku "$PLUGIN_COMMAND_PREFIX:promote" l my_app
   run dokku config my_app
-  assert_contains "${lines[*]}" "DOKKU_ELASTICSEARCH_"
+  assert_contains "${lines[*]}" "DOKKU_SOLR_"
 }
-@test "($PLUGIN_COMMAND_PREFIX:promote) uses ELASTICSEARCH_DATABASE_SCHEME variable" {
-  dokku config:set my_app "ELASTICSEARCH_DATABASE_SCHEME=elasticsearch2" "ELASTICSEARCH_URL=http://host:9200" "DOKKU_ELASTICSEARCH_BLUE_URL=elasticsearch2://dokku-elasticsearch-l:9200"
+@test "($PLUGIN_COMMAND_PREFIX:promote) uses SOLR_DATABASE_SCHEME variable" {
+  dokku config:set my_app "SOLR_DATABASE_SCHEME=solr2" "SOLR_URL=http://host:9200" "DOKKU_SOLR_BLUE_URL=solr2://dokku-solr-l:9200"
   dokku "$PLUGIN_COMMAND_PREFIX:promote" l my_app
-  url=$(dokku config:get my_app ELASTICSEARCH_URL)
-  assert_contains "$url" "elasticsearch2://dokku-elasticsearch-l:9200"
+  url=$(dokku config:get my_app SOLR_URL)
+  assert_contains "$url" "solr2://dokku-solr-l:9200"
 }

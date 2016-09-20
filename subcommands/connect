@@ -4,7 +4,7 @@ set -eo pipefail; [[ $DOKKU_TRACE ]] && set -x
 source "$PLUGIN_BASE_PATH/common/functions"
 source "$(dirname "$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)")/functions"
 
-elasticsearch-connect-cmd() {
+solr-connect-cmd() {
   declare desc="connect via netcat to a $PLUGIN_SERVICE service"
   local cmd="$PLUGIN_COMMAND_PREFIX:connect" argv=("$@"); [[ ${argv[0]} == "$cmd" ]] && shift 1
   declare SERVICE="$1"
@@ -16,4 +16,4 @@ elasticsearch-connect-cmd() {
   dokku_log_fail "Not yet implemented"
 }
 
-elasticsearch-connect-cmd "$@"
+solr-connect-cmd "$@"
